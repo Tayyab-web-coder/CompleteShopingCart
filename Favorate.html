@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <h1>Shop_Cart</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="./Favorate.html"><img src="./Images//download (1).png" alt=""></a></li>
+                <li class="cart">
+                    <span class="counter">0</span>
+                    <img src="./Images/download.png" alt="">
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div class="FavContainer"></div>
+
+    <script>
+        let FavContainer = document.querySelector('.FavContainer')
+        let counter = document.querySelector('.counter')
+        let FavItem = JSON.parse(localStorage.getItem('AddToFav'))
+        let count = JSON.parse(localStorage.getItem('count'))
+        console.log(FavItem);
+
+        function DisplayFavItem() {
+            FavItem.length > 0 ?
+                FavItem.forEach((element) => {
+                    FavContainer.innerHTML += `
+        <div class='card' data-id=${element.id}>
+        <img scr="${element.images[0]}" alt="${element.title}">
+        <span>
+        <h2 class='title'>${element.title}</h2>
+        <h4>$ ${element.price}</h4>
+        </span>
+        </div>`
+                }) : FavContainer.innerHTML = 'No FavItem Present';
+
+            counter.innerHTML = count
+
+        }
+
+        document.addEventListener('DOMContentLoaded', DisplayFavItem)
+
+    </script>
+</body>
+
+</html>
