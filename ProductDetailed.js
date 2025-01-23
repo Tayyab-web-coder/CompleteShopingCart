@@ -25,7 +25,7 @@ function ProductDisplay() {
     <h1>Stock Avalibility ${Getdata.stock}</h1>
     <h1>${Getdata.category}</h1>
     <button onclick="AddToCart(Getdata)">AddToCart</button>
-    <button onclick="AddFav(Getdata)">${AddToFav==true ? 'AddToFav' : 'RemoveToFav'}</button>
+    <button onclick="AddFav(Getdata)">${AddToFav!==true ? 'AddToFav' : 'RemoveToFav'}</button>
     </div>
     `;
     // ImageSwitcher();
