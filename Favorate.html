@@ -30,9 +30,7 @@
         let FavContainer = document.querySelector('.FavContainer')
         let counter = document.querySelector('.counter')
         let FavItem = JSON.parse(localStorage.getItem('AddToFav'))
-        let count = JSON.parse(localStorage.getItem('count'))
-        console.log(FavItem);
-
+        let count = JSON.parse(localStorage.getItem('count')) || 0
         function DisplayFavItem() {
             FavItem.length > 0 ?
                 FavItem.forEach((element) => {

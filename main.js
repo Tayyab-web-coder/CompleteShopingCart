@@ -179,6 +179,7 @@ let checkbox = document.querySelector('.filtercatergory')
 let cartToggler = document.querySelector('.cart')
 let sidebar = document.querySelector('.sidebar')
 let sidebar_cart = document.querySelector('.sidebar_cart')
+
 let counter = document.querySelector('.counter')
 let EmptyCart = document.querySelector('.EmptyCart')
 let CalculatePrice = document.querySelector('.CalculatePrice')
@@ -187,15 +188,15 @@ let ranged = document.querySelector('.ranged')
 document.addEventListener('DOMContentLoaded', () => {
     displayProduct(data)
     CounterUpdate(count)
-    CalculateTotalPrice(cart)
     DisplayCart(cart)
+    CalculateTotalPrice(cart)
 }
 )
+EmptyCart.addEventListener('click', EmptyFeature)
 ranged.addEventListener('change', Ranged)
 input.addEventListener('input', SearchProduct)
 selected.addEventListener('change', SelectedProduct)
 checkbox.addEventListener('change', filtercatergory)
-EmptyCart.addEventListener('click', EmptyFeature)
 
 function displayProduct(data) {
     product_list.innerHTML = '';
@@ -232,6 +233,7 @@ let CalTotalPrice = localStorage.getItem('TotalPrice')
     ? JSON.parse(localStorage.getItem('TotalPrice'))
     : 0;
 let cart = JSON.parse(localStorage.getItem('cart')) || []
+console.log(cart);
 
 
 function CounterUpdate(count) {
@@ -285,13 +287,14 @@ function Ranged(e) {
 
 function DisplayCart(carted) {
 
-    sidebar_cart.innerHTML = ''
-    carted.length > 0 ?
-        carted.forEach((element) => {
-            sidebar_cart.innerHTML += `<section class='SingleProduct' data-id=${element.id}>
+    if (sidebar_cart) {
+        sidebar_cart.innerHTML = '';
+        carted.length > 0 ?
+            carted.forEach((element) => {
+                sidebar_cart.innerHTML += `<section class='SingleProduct' data-id=${element.id}>
 <div>
 <div>
- <img src="${element.images[0]}">
+<img src="${element.images[0]}">
 <h5>${element.title}</h5>
 </div>
 
@@ -306,8 +309,9 @@ function DisplayCart(carted) {
 </div>
 
 </section>`
-        }) : sidebar_cart.innerHTML = 'No Item in Cart'
+            }) : sidebar_cart.innerHTML = 'No Item in Cart'
 
+    }
     CartFeatures()
 }
 
@@ -323,11 +327,13 @@ function CartFeatures() {
                     cart[findone].quantity = cart[findone].quantity + 1;
                     cart[findone].stock = cart[findone].stock - 1;
                     count++;
-                    if (cart[findone].stock< 1) {
-                        alert('Product out of stock')
+                    console.log(cart[findone]);
+                    
+                    if (cart[findone].stock <0) {
                         cart[findone].stock = 0
                         cart[findone].quantity = cart[findone].quantity - 1;
                         count--;
+                        alert('Product out of stock')
                     }
 
 
@@ -353,7 +359,6 @@ function CartFeatures() {
                         // cart[findone].price = cart[findone].price  1;
                     }
                     count--;
-                    // console.log(cart[findone]);
 
                 }
             }
@@ -362,7 +367,7 @@ function CartFeatures() {
                     cart[findone].stock = Math.abs((cart[findone].quantity) + (cart[findone].stock));
                     count = Math.abs(count - (cart[findone].quantity));
                     console.log(cart[findone]);
-                    
+
                     cart = cart.filter((_, index) => index !== findone)
                 }
             }
@@ -387,7 +392,7 @@ function EmptyFeature() {
     cart = []
     count = 0
     cart = localStorage.removeItem('cart') || []
-    count = localStorage.removeItem('count') || []
+    count = localStorage.removeItem('count') || 0
     CalTotalPrice = localStorage.removeItem('CalTotalPrice')
     DisplayCart(cart)
     CounterUpdate(count)

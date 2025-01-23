@@ -3,6 +3,7 @@ let ProductDetailed = document.querySelector('.ProductDetailed')
 let counter = document.querySelector('.counter')
 let CalculatePrice = document.querySelector('.CalculatePrice')
 let AddToFavoriate = []
+let AddToFav = JSON.parse(localStorage.getItem('Fav'));
 
 
 function ProductDisplay() {
@@ -24,7 +25,7 @@ function ProductDisplay() {
     <h1>Stock Avalibility ${Getdata.stock}</h1>
     <h1>${Getdata.category}</h1>
     <button onclick="AddToCart(Getdata)">AddToCart</button>
-    <button onclick="AddFav(Getdata)">AddToFav</button>
+    <button onclick="AddFav(Getdata)">${AddToFav==true ? 'AddToFav' : 'RemoveToFav'}</button>
     </div>
     `;
     // ImageSwitcher();
@@ -43,8 +44,8 @@ function AddToCart(item) {
         cart[findone].quantity++;
         cart[findone].stock--;
         count++;
-        
-        if (cart[findone].stock< 0) {
+
+        if (cart[findone].stock < 0) {
             alert('Product out of stock')
             cart[findone].stock = 0
             cart[findone].quantity = cart[findone].quantity - 1;
@@ -80,8 +81,8 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-let CalTotalPrice = localStorage.getItem('TotalPrice') 
-    ? JSON.parse(localStorage.getItem('TotalPrice')) 
+let CalTotalPrice = localStorage.getItem('TotalPrice')
+    ? JSON.parse(localStorage.getItem('TotalPrice'))
     : 0;
 
 function CalculateTotalPrice() {
@@ -95,12 +96,15 @@ function AddFav(element) {
     let findone = AddToFavoriate.findIndex((item) => item.id == element.id)
 
     if (findone == -1) {
+        AddToFav = true
         AddToFavoriate.push(element)
     } else {
         AddToFavoriate.splice(findone, 1)
+        AddToFav = false
     }
-
+    ProductDisplay()
+    localStorage.setItem('Fav', JSON.stringify(AddToFav))
     localStorage.setItem('AddToFav', JSON.stringify(AddToFavoriate))
 }
 
-document.addEventListener('DOMContentLoaded',CalculateTotalPrice())
+document.addEventListener('DOMContentLoaded', CalculateTotalPrice())
